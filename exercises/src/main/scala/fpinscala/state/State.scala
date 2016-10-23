@@ -30,23 +30,63 @@ object RNG {
       (f(a), rng2)
     }
 
-  def nonNegativeInt(rng: RNG): (Int, RNG) = ???
+  def nonNegativeInt(rng: RNG): (Int, RNG) = rng.nextInt match {
+    case (i, r2) if i < 0 => (-(i+1), r2)
+    case ir2 => ir2
+  }
 
-  def double(rng: RNG): (Double, RNG) = ???
+  def double(rng: RNG): (Double, RNG) = {
+    val (i, r) = nonNegativeInt(rng)
+    (i / (Int.MaxValue.toDouble + 1), r)
+  }
 
-  def intDouble(rng: RNG): ((Int,Double), RNG) = ???
+  def intDouble(rng: RNG): ((Int,Double), RNG) = {
+    val (i,r) = rng.nextInt
+    val (d, r2) = double(r)
+    ((i, d), r2)
+  }
 
-  def doubleInt(rng: RNG): ((Double,Int), RNG) = ???
+  def doubleInt(rng: RNG): ((Double,Int), RNG) = {
+    val ((i, d), r) = intDouble(rng)
+    ((d, i), r)
+  }
 
-  def double3(rng: RNG): ((Double,Double,Double), RNG) = ???
+  def double3(rng: RNG): ((Double,Double,Double), RNG) = {
+    val (d1, r1) = double(rng)
+    val (d2, r2) = double(r1)
+    val (d3, r3) = double(r2)
+    ((d1, d2, d3), r3)
+  }
 
-  def ints(count: Int)(rng: RNG): (List[Int], RNG) = ???
+  def ints(count: Int)(rng: RNG): (List[Int], RNG) = {
+    (0 until count).foldLeft((List[Int](), rng))((listAndRng, i) => {
+      val ls = listAndRng._1
+      val r = listAndRng._2
+      val (i, nr) = int(r)
+      (i :: ls,  nr)
+    })
+  }
 
-  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = ???
+  def map2[A,B,C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] =
+    rng => {
+      val (a, r1) = ra(rng)
+      val (b, r2) = rb(r1)
+      (f(a, b), r2)
+    }
 
-  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] = ???
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
+    rng => {
+      fs.foldLeft((List[A](), rng))((acc, rnd) => {
+        val (a, nr) = rnd(rng)
+        (a :: acc._1, nr)
+      })
+    }
 
-  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] = ???
+  def flatMap[A,B](f: Rand[A])(g: A => Rand[B]): Rand[B] =
+    rng => {
+      val (a, r) = f(rng)
+      g(a)(r)
+    }
 }
 
 case class State[S,+A](run: S => (A, S)) {
