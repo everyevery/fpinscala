@@ -11,10 +11,7 @@ case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
 object Tree {
 
-  def map[A,B](ts: Tree[A])(f: A => B): Tree[B] = ts match {
-    case Leaf(v) => Leaf(f(v))
-    case Branch(l, r) => Branch(map(l)(f), map(r)(f))
-  }
+  def map[A,B](ts: Tree[A])(f: A => B): Tree[B] = ???
 
   def main(args: Array[String]): Unit = {
     val a = Leaf(10)

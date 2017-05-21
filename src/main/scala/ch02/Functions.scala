@@ -6,36 +6,19 @@ import scala.annotation.tailrec
   * Created by pi on 2017. 5. 6..
   */
 object Functions {
-  def formatAbs(i: Int): Unit = {
-    val v = math.abs(i)
-    println(f"$v%d")
-  }
+  def formatAbs(i: Int): Unit = ???
 
-  def factorial(i: Int): Int = {
-    @tailrec
-    def fact(a: Int, i: Int): Int =
-      if (i<1) a
-      else fact(a * i, i-1)
-    fact(1, i)
-  }
-  def formatFactorial(i: Int): Unit = {
-    val v = factorial(i)
-    println(f"$v%d")
-  }
-  def format(i: Int, f: (Int => Int)): Unit = {
-    val v = f(i)
-    println(f"$v%d")
-  }
+  def factorial(i: Int): Int = ???
 
-  def curry[A,B,C](f: (A, B) => C): A => (B => C) = {
-    a => (b => f(a, b))
-  }
+  def formatFactorial(i: Int): Unit = ???
 
-  def uncurry[A,B,C](f: A => B => C): (A, B) => C = {
-    (a, b) => f(a)(b)
-  }
+  def format(i: Int, f: (Int => Int)): Unit = ???
 
-  def compose[A,B,C](f: A => B)(g: B => C): A => C = (x => g(f(x)))
+  def curry[A,B,C](f: (A, B) => C): A => (B => C) = ???
+
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C = ???
+
+  def compose[A,B,C](f: A => B)(g: B => C): A => C = ???
 
   def add2(a: Int, b: Int): Int = a + b
 

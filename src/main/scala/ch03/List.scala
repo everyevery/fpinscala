@@ -10,59 +10,25 @@ case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
-  def sum(ints: List[Int]): Int = ints match {
-    case Nil => 0
-    case Cons(x, xs) => x + sum(xs)
-  }
+  def sum(ints: List[Int]): Int = ???
 
-  def product(ints: List[Int]): Int = ints match {
-    case Nil => 1
-    case Cons(x, xs) => x * product(xs)
-  }
+  def product(ints: List[Int]): Int = ???
 
-  def apply[A](as: A*): List[A] =
-    if (as.isEmpty) Nil
-    else Cons(as.head, apply(as.tail: _*))
+  def apply[A](as: A*): List[A] = ???
 
-  def foldRight[A](as: List[A], z:A)(f: (A, A) => A): A = as match {
-    case Nil => z
-    case Cons(x, xs) => f(x, foldRight(xs, z)(f))
-  }
+  def foldRight[A](as: List[A], z:A)(f: (A, A) => A): A = ???
 
-  def foldLeft[A](z: A, as: List[A])(f: (A, A) => A): A = as match {
-    case Nil => z
-    case Cons(x, xs) => foldLeft(f(z, x), xs)(f)
-  }
+  def foldLeft[A](z: A, as: List[A])(f: (A, A) => A): A = ???
 
-  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
-    @tailrec
-    def has(sp: List[A], sb: List[A]): Boolean = (sup, sub) match {
-        case (_, Nil) => true
-        case (Cons(x, xs), Cons(y, ys)) if x == y => has(xs, ys)
-        case _ => false
-      }
-    sup match {
-      case Nil => false
-      case xss@Cons(x, xs) => if (has(sup, sub)) true else hasSubsequence(xs, sub)
-    }
+  def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = ???
 
-  }
+  def map[A,B](xs: List[A])(f: A => B): List[B] = ???
 
-  def map[A,B](xs: List[A])(f: A => B): List[B] = xs match {
-    case Nil => Nil
-    case Cons(a, as) => Cons(f(a), map(as)(f))
-  }
+  def append[A](as: List[A], bs: List[A]): List[A] = ???
 
-  def append[A](as: List[A], bs: List[A]): List[A] = as match {
-    case Nil => bs
-    case Cons(x, xs) => Cons(x, append(xs, bs))
-  }
+  def concat[A](ass: List[List[A]]): List[A] = ???
 
-  def concat[A](ass: List[List[A]]): List[A] = foldRight(ass, Nil)(append)
-
-  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = {
-    concat(map(as)(f))
-  }
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = ???
 
   def main(args: Array[String]): Unit = {
     val as: List[Int] = List(1, 2, 3, 4, 5)

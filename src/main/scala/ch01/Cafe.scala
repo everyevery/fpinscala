@@ -12,16 +12,9 @@ class Cafe {
 }
 
 class Cafe2 {
-  def buyCoffee(cc: CreditCard): (Coffee, Charge) = {
-    val cup = Coffee()
-    (cup, Charge(cc, cup.price))
-  }
+  def buyCoffee(cc: CreditCard): (Coffee, Charge) = ???
 
-  def buyCoffee(cc: CreditCard, n: Int): (List[Coffee], Charge) = {
-    val purchases = List.fill(n)(buyCoffee(cc))
-    val (coffee, charges) = purchases.unzip
-    (coffee, charges.reduce(_.combine(_)))
-  }
+  def buyCoffee(cc: CreditCard, n: Int): (List[Coffee], Charge) = ???
 }
 
 object Cafe {
