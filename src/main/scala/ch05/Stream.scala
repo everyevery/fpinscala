@@ -16,17 +16,18 @@ sealed trait Stream[+A] {
     case _ => List()
   }
 
-  def toList2: List[A] =  {
+  def toList2: List[A] = {
     @tailrec
     def go(s: Stream[A], acc: List[A]): List[A] = s match {
       case Cons(h, t) => go(t(), h() :: acc)
       case _ => acc
     }
+
     go(this, List()).reverse
   }
 
   def take(n: Int): Stream[A] = this match {
-    case Cons(h, t) if n != 0 => Cons(h, () => t().take(n-1))
+    case Cons(h, t) if n != 0 => Cons(h, () => t().take(n - 1))
     case _ => Empty
   }
 
@@ -36,7 +37,7 @@ sealed trait Stream[+A] {
   }
 
   def drop(n: Int): Stream[A] = this match {
-    case Cons(_, t) if (n > 0) => t().drop(n-1)
+    case Cons(_, t) if (n > 0) => t().drop(n - 1)
     case _ => this
   }
 
@@ -47,6 +48,7 @@ sealed trait Stream[+A] {
 }
 
 case object Empty extends Stream[Nothing]
+
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
 object Stream {
@@ -64,17 +66,19 @@ object Stream {
   def constant[A](a: A): Stream[A] = cons(a, constant(a))
 
   def fibs: Stream[Int] = {
-    def go(f0: Int, f1: Int): Stream[Int] = cons(f0, go(f1, f0+f1))
+    def go(f0: Int, f1: Int): Stream[Int] = cons(f0, go(f1, f0 + f1))
+
     go(0, 1)
   }
 
-  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = f(z) match {
-    case Some((a, s)) => cons(z, unfold(s)(f))
-    case None => Empty
-  }
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    f(z) match {
+      case Some((a, s)) => cons(a, unfold(s)(f))
+      case None => Empty
+    }
 
   def main(args: Array[String]): Unit = {
-    val s = cons(1, cons(2,  Empty))
+    val s = cons(1, cons(2, Empty))
     println(constant(10).take(10))
     println(cons(1, cons(2, cons(3, cons(4, ???)))).take(2))
     println(fibs.take(10))
